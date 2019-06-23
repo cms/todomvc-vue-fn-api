@@ -84,20 +84,12 @@
 //  watch,
 //  onMounted
 //} from "vue-function-api";
-import { onMounted } from "vue-function-api";
+import { value, watch, computed, onMounted } from "vue-function-api";
 import todoStorage from "../helpers/todo-storage";
 import filters from "../helpers/filters";
 
 export default {
   name: "App",
-  data() {
-    return {
-      todos: todoStorage.fetch(),
-      newTodo: "",
-      editedTodo: null,
-      visibility: "all"
-    };
-  },
   setup() {
     onMounted(() => {
       const app = this;
@@ -114,106 +106,100 @@ export default {
       window.addEventListener("hashchange", onHashChange);
       onHashChange();
     });
-  },
-  //const todos = value(todoStorage.fetch());
-  //console.log(todos);
+    const todos = value(todoStorage.fetch());
+    const newTodo = value("");
+    const editedTodo = value(null);
+    const visibility = value("all");
+    const beforeEditCache = value("");
 
-  //return { todos }
-  //},
-  // watch todos change for localStorage persistence
-  watch: {
-    todos: {
-      handler: function(todos) {
+    watch(
+      () => todos.value,
+      todos => {
         todoStorage.save(todos);
       },
-      deep: true
-    }
-  },
+      { deep: true, lazy: true }
+    );
 
-  // computed properties
-  // http://vuejs.org/guide/computed.html
-  computed: {
-    filteredTodos: function() {
-      return filters[this.visibility](this.todos);
-    },
-    remaining: function() {
-      return filters.active(this.todos).length;
-    },
-    allDone: {
-      get: function() {
-        return this.remaining === 0;
-      },
-      set: function(value) {
-        this.todos.forEach(function(todo) {
+    // computed:
+    const filteredTodos = computed(() => filters[this.visibility](todos.value));
+    const remaining = computed(() => filters.active(todos.value).length);
+    const allDone = computed(
+      () => remaining.value === 0,
+      value => {
+        todos.value.forEach(function(todo) {
           todo.completed = value;
         });
       }
-    }
-  },
+    );
 
-  filters: {
-    pluralize: function(n) {
-      return n === 1 ? "item" : "items";
-    }
-  },
-
-  // methods that implement data logic.
-  // note there's no DOM manipulation here at all.
-  methods: {
-    addTodo: function() {
-      var value = this.newTodo && this.newTodo.trim();
+    const addTodo = () => {
+      var value = newTodo.value && newTodo.value.trim();
       if (!value) {
         return;
       }
-      this.todos.push({
+      todos.value.push({
         id: todoStorage.uid++,
         title: value,
         completed: false
       });
-      this.newTodo = "";
-    },
+      newTodo.value = "";
+    };
 
-    removeTodo: function(todo) {
-      this.todos.splice(this.todos.indexOf(todo), 1);
-    },
+    const removeTodo = todo => {
+      todos.value.splice(todos.value.indexOf(todo), 1);
+    };
 
-    editTodo: function(todo) {
-      this.beforeEditCache = todo.title;
-      this.editedTodo = todo;
-    },
+    const editTodo = todo => {
+      beforeEditCache.value = todo.title;
+      editedTodo.value = todo;
+    };
 
-    doneEdit: function(todo) {
-      if (!this.editedTodo) {
+    const doneEdit = todo => {
+      if (!editedTodo) {
         return;
       }
-      this.editedTodo = null;
+      editedTodo.value = null;
       todo.title = todo.title.trim();
       if (!todo.title) {
-        this.removeTodo(todo);
+        removeTodo(todo);
       }
-    },
+    };
 
-    cancelEdit: function(todo) {
-      this.editedTodo = null;
-      todo.title = this.beforeEditCache;
-    },
+    const cancelEdit = todo => {
+      editedTodo.value = null;
+      todo.title = beforeEditCache.value;
+    };
 
-    removeCompleted: function() {
-      this.todos = filters.active(this.todos);
+    const removeCompleted = () => {
+      todos.value = filters.active(todos.value);
+    };
+
+    return {
+      todos,
+      newTodo,
+      editedTodo,
+      visibility,
+
+      filteredTodos,
+      remaining,
+      allDone,
+      addTodo,
+      removeTodo,
+      editTodo,
+      doneEdit,
+      cancelEdit,
+      removeCompleted
+    };
+  },
+  filters: {
+    pluralize: function(n) {
+      return n === 1 ? "item" : "items";
     }
   }
 };
 </script>
 
 <style>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 [v-cloak] {
   display: none;
 }
