@@ -118,17 +118,17 @@ export default {
       todos,
       newTodo,
       editedTodo,
-      visibility,
-
-      filteredTodos,
-      remaining,
-      allDone,
       addTodo,
-      removeTodo,
       editTodo,
+      removeTodo,
       doneEdit,
       cancelEdit,
       removeCompleted,
+
+      visibility,
+      filteredTodos,
+      remaining,
+      allDone,
     }
   },
   filters: {
