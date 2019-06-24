@@ -3,7 +3,7 @@ import filters from '../../helpers/filters'
 import useLocalStorage from './useLocalStorage'
 
 export default function useTodoList() {
-  const todos = useLocalStorage('todos-vuejs-fn-api-2.0')
+  const todos = useLocalStorage('todos-vuejs-fn-api-2.0', [])
   const newTodo = value('')
   const editedTodo = value(null)
   const beforeEditCache = value('')
