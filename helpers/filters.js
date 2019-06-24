@@ -1,13 +1,13 @@
 const filters = {
-  all: function(todos) {
+  all(todos) {
     return todos
   },
-  active: function(todos) {
+  active(todos) {
     return todos.filter(function(todo) {
       return !todo.completed
     })
   },
-  completed: function(todos) {
+  completed(todos) {
     return todos.filter(function(todo) {
       return todo.completed
     })

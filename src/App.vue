@@ -10,20 +10,25 @@
           placeholder="What needs to be done?"
           v-model="newTodo"
           @keyup.enter="addTodo"
-        >
+        />
       </header>
       <section class="main" v-show="todos.length" v-cloak>
-        <input id="toggle-all" class="toggle-all" type="checkbox" v-model="allDone">
+        <input
+          id="toggle-all"
+          class="toggle-all"
+          type="checkbox"
+          v-model="allDone"
+        />
         <label for="toggle-all"></label>
         <ul class="todo-list">
           <li
             v-for="todo in filteredTodos"
             class="todo"
             :key="todo.id"
-            :class="{ completed: todo.completed, editing: todo == editedTodo }"
+            :class="{completed: todo.completed, editing: todo == editedTodo}"
           >
             <div class="view">
-              <input class="toggle" type="checkbox" v-model="todo.completed">
+              <input class="toggle" type="checkbox" v-model="todo.completed" />
               <label @dblclick="editTodo(todo)">{{ todo.title }}</label>
               <button class="destroy" @click="removeTodo(todo)"></button>
             </div>
@@ -35,7 +40,7 @@
               @blur="doneEdit(todo)"
               @keyup.enter="doneEdit(todo)"
               @keyup.esc="cancelEdit(todo)"
-            >
+            />
           </li>
         </ul>
       </section>
@@ -46,20 +51,26 @@
         </span>
         <ul class="filters">
           <li>
-            <a href="#/all" :class="{ selected: visibility == 'all' }">All</a>
+            <a href="#/all" :class="{selected: visibility == 'all'}">All</a>
           </li>
           <li>
-            <a href="#/active" :class="{ selected: visibility == 'active' }">Active</a>
+            <a href="#/active" :class="{selected: visibility == 'active'}"
+              >Active</a
+            >
           </li>
           <li>
-            <a href="#/completed" :class="{ selected: visibility == 'completed' }">Completed</a>
+            <a href="#/completed" :class="{selected: visibility == 'completed'}"
+              >Completed</a
+            >
           </li>
         </ul>
         <button
           class="clear-completed"
           @click="removeCompleted"
           v-show="todos.length > remaining"
-        >Clear completed</button>
+        >
+          Clear completed
+        </button>
       </footer>
     </section>
     <footer class="info">
@@ -77,11 +88,11 @@
 </template>
 
 <script>
-import useTodoList from "./hooks/useTodoList";
-import useVisibilityFilter from "./hooks/useVisibilityFilter";
+import useTodoList from './hooks/useTodoList'
+import useVisibilityFilter from './hooks/useVisibilityFilter'
 
 export default {
-  name: "App",
+  name: 'App',
   setup() {
     const {
       todos,
@@ -92,15 +103,12 @@ export default {
       removeTodo,
       doneEdit,
       cancelEdit,
-      removeCompleted
-    } = useTodoList();
+      removeCompleted,
+    } = useTodoList()
 
-    const {
-      visibility,
-      filteredTodos,
-      remaining,
-      allDone
-    } = useVisibilityFilter(todos);
+    const {visibility, filteredTodos, remaining, allDone} = useVisibilityFilter(
+      todos,
+    )
 
     return {
       todos,
@@ -116,15 +124,15 @@ export default {
       editTodo,
       doneEdit,
       cancelEdit,
-      removeCompleted
-    };
+      removeCompleted,
+    }
   },
   filters: {
     pluralize: function(n) {
-      return n === 1 ? "item" : "items";
-    }
-  }
-};
+      return n === 1 ? 'item' : 'items'
+    },
+  },
+}
 </script>
 
 <style>

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import 'todomvc-app-css/index.css'
-import { plugin } from 'vue-function-api'
+import {plugin} from 'vue-function-api'
 
 Vue.config.productionTip = false
 
