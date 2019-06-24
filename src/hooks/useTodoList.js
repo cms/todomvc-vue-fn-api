@@ -1,21 +1,13 @@
-import { value, watch, computed, onMounted } from "vue-function-api";
-import todoStorage from "../..//helpers/todo-storage";
-import filters from "../..//helpers/filters";
+import { value } from "vue-function-api";
+import filters from "../../helpers/filters";
+import useLocalStorage from "./useLocalStorage";
 
 export default function useTodoList() {
-    const todos = value(todoStorage.fetch());
+    const todos = useLocalStorage('todos-vuejs-fn-api-2.0');
     const newTodo = value("");
     const editedTodo = value(null);
-    const visibility = value("all");
     const beforeEditCache = value("");
 
-    watch(
-      () => todos.value,
-      todos => {
-        todoStorage.save(todos);
-      },
-      { deep: true, lazy: true }
-    );
 
     const addTodo = () => {
       var value = newTodo.value && newTodo.value.trim();
@@ -23,7 +15,7 @@ export default function useTodoList() {
         return;
       }
       todos.value.push({
-        id: todoStorage.uid++,
+        id: todos.length,
         title: value,
         completed: false
       });
@@ -63,7 +55,6 @@ export default function useTodoList() {
         todos,
         newTodo,
         editedTodo,
-        visibility,
 
         addTodo,
         editTodo,
