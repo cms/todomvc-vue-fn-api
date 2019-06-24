@@ -5,14 +5,6 @@ import {plugin} from 'vue-function-api'
 
 Vue.config.productionTip = false
 
-Vue.directive('todo-focus', {
-  bind: function(el, binding) {
-    if (binding.value) {
-      el.focus()
-    }
-  },
-})
-
 Vue.use(plugin)
 
 new Vue({

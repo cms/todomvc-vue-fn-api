@@ -136,6 +136,15 @@ export default {
       return n === 1 ? 'item' : 'items'
     },
   },
+  directives: {
+    'todo-focus': {
+      bind: function(el, binding) {
+        if (binding.value) {
+          el.focus()
+        }
+      },
+    },
+  },
 }
 </script>
 
