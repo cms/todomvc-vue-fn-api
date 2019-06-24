@@ -3,14 +3,10 @@ const filters = {
     return todos
   },
   active(todos) {
-    return todos.filter(function(todo) {
-      return !todo.completed
-    })
+    return todos.filter(todo => !todo.completed)
   },
   completed(todos) {
-    return todos.filter(function(todo) {
-      return todo.completed
-    })
+    return todos.filter(todo => todo.completed)
   },
 } // handle routing
 
