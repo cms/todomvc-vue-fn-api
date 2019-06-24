@@ -4,16 +4,15 @@ import useEventListener from './useEventListener'
 
 export default function useVisibilityFilter(todos) {
   const visibility = value('all')
-  const onHashChange = () => {
+
+  useEventListener('hashchange', () => {
     if (filters[visibility.value]) {
       visibility.value = window.location.hash.replace(/#\/?/, '')
     } else {
       window.location.hash = ''
       visibility.value = 'all'
     }
-  }
-
-  useEventListener('hashchange', onHashChange)
+  })
 
   // computed:
   const filteredTodos = computed(() => filters[visibility.value](todos.value))
