@@ -6,12 +6,12 @@ Based on the [Official Vue 2 TodoMVC](https://vuejs.org/v2/examples/todomvc.html
 
 The code was refactored into functional pieces:
 
-## useLocalStorage(initialValue: any?)
+## useLocalStorage(key: string, initialValue: any?)
 
- A simple implementation of the wrapped `value` concept but persisted in `localStorage`. It's used just like the API `value` function. But it will be persisted.
+A simple implementation of the wrapped `value` concept but persisted in `localStorage`. It's used just like the API `value` function. But it will be persisted on localStorage in the provided key.
 
 ```javascript
-const myValue = useLocalStorage('initial')
+const todos = useLocalStorage('todos', [])
 ```
 
 ## useEventListener(eventName, handler, element = window)
@@ -33,10 +33,10 @@ function useMouse() {
 }
 ```
 
-## useVisibilityFilter
+## useVisibilityFilter(todos)
 
 This hooks abstracts the filtering of the todos.
 
-## useTodoList
+## useTodoList()
 
 Top-most level logic, handles the todo list.
