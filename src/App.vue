@@ -76,8 +76,12 @@
     <footer class="info">
       <p>Double-click to edit a todo</p>
       <p>
-        Written by
+        Original version by
         <a href="http://evanyou.me">Evan You</a>
+      </p>
+      <p>
+        Refactored to Vue Function API proposal by
+        <a href="http://cms.gt">Christian C. Salvad&oacute;</a>
       </p>
       <p>
         Part of
