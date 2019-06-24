@@ -84,41 +84,37 @@
 //  watch,
 //  onMounted
 //} from "vue-function-api";
-import { value, watch, computed, onMounted } from "vue-function-api";
-import todoStorage from "../helpers/todo-storage";
+import { watch, computed, onMounted } from "vue-function-api";
 import filters from "../helpers/filters";
+import useTodoList from "./hooks/useTodoList";
+import useEventListener from "./hooks/useEventListener";
 
 export default {
   name: "App",
   setup() {
-    onMounted(() => {
-      const app = this;
-      function onHashChange() {
-        var visibility = window.location.hash.replace(/#\/?/, "");
-        if (filters[visibility]) {
-          app.visibility = visibility;
-        } else {
-          window.location.hash = "";
-          app.visibility = "all";
-        }
+    const onHashChange = () => {
+      if (filters[visibility.value]) {
+        visibility.value = window.location.hash.replace(/#\/?/, "");
+      } else {
+        window.location.hash = "";
+        visibility.value = "all";
       }
+    };
 
-      window.addEventListener("hashchange", onHashChange);
-      onHashChange();
-    });
-    const todos = value(todoStorage.fetch());
-    const newTodo = value("");
-    const editedTodo = value(null);
-    const visibility = value("all");
-    const beforeEditCache = value("");
+    useEventListener("hashchange", onHashChange);
 
-    watch(
-      () => todos.value,
-      todos => {
-        todoStorage.save(todos);
-      },
-      { deep: true, lazy: true }
-    );
+    const {
+      todos,
+      newTodo,
+      editedTodo,
+      visibility,
+      addTodo,
+      editTodo,
+      removeTodo,
+      doneEdit,
+      cancelEdit,
+      removeCompleted
+    } = useTodoList();
 
     // computed:
     const filteredTodos = computed(() => filters[this.visibility](todos.value));
@@ -131,48 +127,6 @@ export default {
         });
       }
     );
-
-    const addTodo = () => {
-      var value = newTodo.value && newTodo.value.trim();
-      if (!value) {
-        return;
-      }
-      todos.value.push({
-        id: todoStorage.uid++,
-        title: value,
-        completed: false
-      });
-      newTodo.value = "";
-    };
-
-    const removeTodo = todo => {
-      todos.value.splice(todos.value.indexOf(todo), 1);
-    };
-
-    const editTodo = todo => {
-      beforeEditCache.value = todo.title;
-      editedTodo.value = todo;
-    };
-
-    const doneEdit = todo => {
-      if (!editedTodo) {
-        return;
-      }
-      editedTodo.value = null;
-      todo.title = todo.title.trim();
-      if (!todo.title) {
-        removeTodo(todo);
-      }
-    };
-
-    const cancelEdit = todo => {
-      editedTodo.value = null;
-      todo.title = beforeEditCache.value;
-    };
-
-    const removeCompleted = () => {
-      todos.value = filters.active(todos.value);
-    };
 
     return {
       todos,
