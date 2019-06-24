@@ -98,37 +98,12 @@ import useVisibilityFilter from './hooks/useVisibilityFilter'
 export default {
   name: 'App',
   setup() {
-    const {
-      todos,
-      newTodo,
-      editedTodo,
-      addTodo,
-      editTodo,
-      removeTodo,
-      doneEdit,
-      cancelEdit,
-      removeCompleted,
-    } = useTodoList()
-
-    const {visibility, filteredTodos, remaining, allDone} = useVisibilityFilter(
-      todos,
-    )
+    const todoList = useTodoList()
+    const visibilityFilter = useVisibilityFilter(todoList.todos)
 
     return {
-      todos,
-      newTodo,
-      editedTodo,
-      addTodo,
-      editTodo,
-      removeTodo,
-      doneEdit,
-      cancelEdit,
-      removeCompleted,
-
-      visibility,
-      filteredTodos,
-      remaining,
-      allDone,
+      ...todoList,
+      ...visibilityFilter,
     }
   },
   filters: {
