@@ -1,4 +1,4 @@
-import {onMounted, onUnmounted} from 'vue-function-api'
+import {onMounted, onUnmounted} from '@vue/composition-api'
 
 export default function useEventListener(eventName, handler, element = window) {
   onMounted(() => {

@@ -1,9 +1,9 @@
-import {value, computed} from 'vue-function-api'
+import {ref, computed} from '@vue/composition-api'
 import filters from '../../helpers/filters'
 import useEventListener from './useEventListener'
 
 export default function useVisibilityFilter(todos) {
-  const visibility = value('all')
+  const visibility = ref('all')
 
   useEventListener('hashchange', () => {
     if (filters[visibility.value]) {

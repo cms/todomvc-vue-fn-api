@@ -1,11 +1,11 @@
-import {value} from 'vue-function-api'
+import {ref} from '@vue/composition-api'
 import filters from '../../helpers/filters'
 import useLocalStorage from './useLocalStorage'
 
 export default function useTodoList() {
   const todos = useLocalStorage('todos-vuejs-fn-api-2.0', [])
-  const editedTodo = value(null)
-  const beforeEditCache = value('')
+  const editedTodo = ref(null)
+  const beforeEditCache = ref('')
 
   const addTodo = ({target}) => {
     var value = target.value && target.value.trim()

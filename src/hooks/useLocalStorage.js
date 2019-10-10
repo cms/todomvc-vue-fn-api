@@ -1,4 +1,4 @@
-import {value, watch} from 'vue-function-api'
+import {ref, watch} from '@vue/composition-api'
 
 function getStoredValue(key) {
   const stringValue = localStorage.getItem(key)
@@ -11,7 +11,7 @@ function getStoredValue(key) {
 }
 
 export default function useLocalStorage(key, initialValue) {
-  const val = value(initialValue)
+  const val = ref(initialValue)
   const storedValue = getStoredValue(key)
 
   if (storedValue) {
