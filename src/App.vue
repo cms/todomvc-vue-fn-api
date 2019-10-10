@@ -8,7 +8,6 @@
           autofocus
           autocomplete="off"
           placeholder="What needs to be done?"
-          v-model="newTodo"
           @keyup.enter="addTodo"
         />
       </header>

@@ -4,12 +4,11 @@ import useLocalStorage from './useLocalStorage'
 
 export default function useTodoList() {
   const todos = useLocalStorage('todos-vuejs-fn-api-2.0', [])
-  const newTodo = value('')
   const editedTodo = value(null)
   const beforeEditCache = value('')
 
-  const addTodo = () => {
-    var value = newTodo.value && newTodo.value.trim()
+  const addTodo = ({target}) => {
+    var value = target.value && target.value.trim()
     if (!value) {
       return
     }
@@ -18,7 +17,7 @@ export default function useTodoList() {
       title: value,
       completed: false,
     })
-    newTodo.value = ''
+    target.value = ''
   }
 
   const removeTodo = todo => {
@@ -52,7 +51,6 @@ export default function useTodoList() {
 
   return {
     todos,
-    newTodo,
     editedTodo,
 
     addTodo,
